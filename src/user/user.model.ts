@@ -4,11 +4,14 @@ import {
   Model,
   AutoIncrement,
   PrimaryKey,
-  Default,
 } from 'sequelize-typescript';
 
-@Table
-export class User extends Model {
+@Table({
+  tableName: 'Users',
+  timestamps: true,
+  underscored: true,
+})
+export class Users extends Model {
   @PrimaryKey
   @AutoIncrement
   @Column
@@ -32,17 +35,19 @@ export class User extends Model {
   @Column
   type: string;
 
-  @Default(new Date())
-  @Column
+  // @Default(new Date())
+  @Column({ defaultValue: new Date() })
   createdAt: Date;
 
-  @Default(new Date())
-  @Column
+  // @Default(new Date())
+  @Column({ defaultValue: new Date() })
   updatedAt: Date;
 
-  @Column
-  createBy: string;
+  // @Default('user')
+  @Column({ defaultValue: 'user' })
+  createdBy: string;
 
-  @Column
-  updateBy: string;
+  // @Default('user')
+  @Column({ defaultValue: 'user' })
+  updatedBy: string;
 }

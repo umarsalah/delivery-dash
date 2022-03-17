@@ -4,7 +4,7 @@ import { Sequelize } from 'sequelize-typescript';
 
 import { PROVIDERS, DATABASE_CONFIG } from '../constants';
 
-import { User } from '../user/user.model';
+import { Users } from '../user/user.model';
 
 export const databaseProviders = [
   {
@@ -14,8 +14,7 @@ export const databaseProviders = [
         dialect: 'mysql',
         ...configService.get(DATABASE_CONFIG),
       });
-      sequelize.addModels([User]);
-      await sequelize.sync();
+      sequelize.addModels([Users]);
       return sequelize;
     },
     inject: [ConfigService],
