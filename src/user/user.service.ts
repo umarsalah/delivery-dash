@@ -14,20 +14,44 @@ export class UserService {
   ) {}
 
   async login(email: string, password: string): Promise<any> {
-    try {
-      const user = await this.userRepository.findOne({
-        where: { email },
-      });
-      if (!user) {
-        throw new HttpException(ERRORS.USER_NOT_FOUND, HttpStatus.NOT_FOUND);
-      }
+    const user = await this.userRepository.findOne({
+      where: { email },
+    });
+    if (!user) {
+      throw new HttpException(ERRORS.USER_NOT_FOUND, HttpStatus.NOT_FOUND);
+    }
 
-      const isValid = await comparePassword(password, user.password);
-      if (!isValid) {
-        throw new HttpException(ERRORS.WRONG_PASSWORD, HttpStatus.BAD_REQUEST);
-      }
+    const isValid = await comparePassword(password, user.password);
+    if (!isValid) {
+      throw new HttpException(ERRORS.WRONG_PASSWORD, HttpStatus.BAD_REQUEST);
+    }
 
-      const token = jwt.sign({ username: user.firstName }, 'secret', {
+    const token = jwt.sign({ username: user.firstName }, 'secret', {
+      expiresIn: '8h',
+    });
+
+    return {
+      user: user.firstName,
+      email: user.email,
+      token,
+    };
+  }
+  async signup(body): Promise<any> {
+    const user = await this.userRepository.findOne({
+      where: { email: body.email },
+    });
+    if (user) {
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          error: ERRORS.USER_ALREADY_EXIST,
+        },
+        HttpStatus.FORBIDDEN,
+      );
+    } else {
+      body.password = await hashPassword(body.password);
+      const user = await this.userRepository.create(body);
+      const token = jwt.sign({ username: user.email }, 'secret', {
         expiresIn: '8h',
       });
 
@@ -36,38 +60,6 @@ export class UserService {
         email: user.email,
         token,
       };
-    } catch (err) {
-      throw new HttpException(err, 400);
-    }
-  }
-  async signup(body): Promise<any> {
-    try {
-      const user = await this.userRepository.findOne({
-        where: { email: body.email },
-      });
-      if (user) {
-        throw new HttpException(
-          {
-            status: HttpStatus.FORBIDDEN,
-            error: ERRORS.USER_ALREADY_EXIST,
-          },
-          HttpStatus.FORBIDDEN,
-        );
-      } else {
-        body.password = await hashPassword(body.password);
-        const user = await this.userRepository.create(body);
-        const token = jwt.sign({ username: user.email }, 'secret', {
-          expiresIn: '8h',
-        });
-
-        return {
-          user: user.firstName,
-          email: user.email,
-          token,
-        };
-      }
-    } catch (err) {
-      throw new HttpException(err, 400);
     }
   }
 
