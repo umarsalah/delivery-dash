@@ -83,4 +83,19 @@ export class UserService {
     }
     return user;
   }
+
+  async deleteUser(id: number): Promise<any> {
+    const user = await this.userRepository.findOne({
+      where: { id },
+    });
+    if (!user) {
+      throw new HttpException(ERRORS.USER_NOT_FOUND, HttpStatus.NOT_FOUND);
+    }
+    await this.userRepository.destroy({
+      where: { id },
+    });
+    return {
+      message: 'User deleted successfully',
+    };
+  }
 }
