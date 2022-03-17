@@ -70,4 +70,10 @@ export class UserService {
       throw new HttpException(err, 400);
     }
   }
+
+  async getAllUsers(): Promise<any> {
+    return await this.userRepository.findAll({
+      attributes: ['id', 'firstName', 'lastName', 'email', 'type'],
+    });
+  }
 }
