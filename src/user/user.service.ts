@@ -1,4 +1,4 @@
-import { Injectable, Inject, HttpException } from '@nestjs/common';
+import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 
 import * as jwt from 'jsonwebtoken';
 
@@ -19,12 +19,12 @@ export class UserService {
         where: { email },
       });
       if (!user) {
-        throw new HttpException(ERRORS.USER_NOT_FOUND, 404);
+        throw new HttpException(ERRORS.USER_NOT_FOUND, HttpStatus.NOT_FOUND);
       }
 
       const isValid = await comparePassword(password, user.password);
       if (!isValid) {
-        throw new HttpException(ERRORS.WRONG_PASSWORD, 401);
+        throw new HttpException(ERRORS.WRONG_PASSWORD, HttpStatus.BAD_REQUEST);
       }
 
       const token = jwt.sign({ username: user.firstName }, 'secret', {
