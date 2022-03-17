@@ -72,8 +72,23 @@ export class UserService {
   }
 
   async getAllUsers(): Promise<any> {
-    return await this.userRepository.findAll({
+    const users = await this.userRepository.findAll({
       attributes: ['id', 'firstName', 'lastName', 'email', 'type'],
     });
+    if (!users) {
+      throw new HttpException(ERRORS.USER_NOT_FOUND, HttpStatus.NOT_FOUND);
+    }
+    return users;
+  }
+
+  async getUser(id: number): Promise<any> {
+    const user = await this.userRepository.findOne({
+      where: { id },
+      attributes: ['id', 'firstName', 'lastName', 'email', 'type'],
+    });
+    if (!user) {
+      throw new HttpException(ERRORS.USER_NOT_FOUND, HttpStatus.NOT_FOUND);
+    }
+    return user;
   }
 }
