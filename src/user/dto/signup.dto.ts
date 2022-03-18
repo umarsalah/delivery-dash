@@ -28,4 +28,8 @@ export class SignupDto {
   @IsNotEmpty()
   @IsString()
   createdBy: string;
+
+  @IsNotEmpty()
+  @IsString()
+  updatedBy: string;
 }

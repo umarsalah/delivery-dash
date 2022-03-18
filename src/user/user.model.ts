@@ -4,6 +4,7 @@ import {
   Model,
   AutoIncrement,
   PrimaryKey,
+  Default,
 } from 'sequelize-typescript';
 
 @Table({
@@ -35,19 +36,17 @@ export class Users extends Model {
   @Column
   type: string;
 
-  // @Default(new Date())
-  @Column({ defaultValue: new Date() })
+  @Default(new Date())
+  @Column
   createdAt: Date;
 
-  // @Default(new Date())
-  @Column({ defaultValue: new Date() })
+  @Default(new Date())
+  @Column
   updatedAt: Date;
 
-  // @Default('user')
-  @Column({ defaultValue: 'user' })
+  @Column
   createdBy: string;
 
-  // @Default('user')
-  @Column({ defaultValue: 'user' })
+  @Column
   updatedBy: string;
 }
