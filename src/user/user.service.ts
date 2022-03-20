@@ -2,7 +2,7 @@ import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 
 import * as jwt from 'jsonwebtoken';
 
-import { REPOSITORIES, ERRORS } from '../constants';
+import { REPOSITORIES, ERRORS, UserObject, User } from '../common/constants';
 import { comparePassword, hashPassword } from 'src/utils';
 import { Users } from './user.model';
 
@@ -20,17 +20,17 @@ export class UserService {
     });
   }
 
-  async login(email: string, password: string): Promise<any> {
+  async login(email: string, password: string): Promise<UserObject> {
     const user = await this.userRepository.findOne({
       where: { email },
     });
     if (!user) {
-      throw new HttpException(ERRORS.USER_NOT_FOUND, HttpStatus.NOT_FOUND);
+      throw new HttpException(ERRORS.LOGIN_ERROR, HttpStatus.NOT_FOUND);
     }
 
     const isValid = await comparePassword(password, user.password);
     if (!isValid) {
-      throw new HttpException(ERRORS.WRONG_PASSWORD, HttpStatus.BAD_REQUEST);
+      throw new HttpException(ERRORS.LOGIN_ERROR, HttpStatus.BAD_REQUEST);
     }
 
     const token = jwt.sign({ user: user.email }, 'secret', {
@@ -43,7 +43,7 @@ export class UserService {
       token,
     };
   }
-  async signup(body): Promise<any> {
+  async signup(body): Promise<UserObject> {
     const user = await this.userRepository.findOne({
       where: { email: body.email },
     });
@@ -70,39 +70,37 @@ export class UserService {
     }
   }
 
-  async getAllUsers(): Promise<any> {
+  async getAllUsers(): Promise<User[]> {
     const users = await this.userRepository.findAll({
       attributes: ['id', 'firstName', 'lastName', 'email', 'type'],
     });
-    if (!users) {
-      throw new HttpException(ERRORS.USER_NOT_FOUND, HttpStatus.NOT_FOUND);
-    }
     return users;
   }
 
-  async getUser(id: number): Promise<any> {
+  async getUser(id: number): Promise<User> {
     const user = await this.userRepository.findOne({
       where: { id },
       attributes: ['id', 'firstName', 'lastName', 'email', 'type'],
     });
-    if (!user) {
-      throw new HttpException(ERRORS.USER_NOT_FOUND, HttpStatus.NOT_FOUND);
-    }
     return user;
   }
 
-  async deleteUser(id: number): Promise<any> {
+  async deleteUser(id: number): Promise<number> {
     const user = await this.userRepository.findOne({
       where: { id },
     });
     if (!user) {
-      throw new HttpException(ERRORS.USER_NOT_FOUND, HttpStatus.NOT_FOUND);
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: ERRORS.USER_NOT_FOUND,
+        },
+        HttpStatus.NOT_FOUND,
+      );
     }
     await this.userRepository.destroy({
       where: { id },
     });
-    return {
-      message: 'User deleted successfully',
-    };
+    return id;
   }
 }

@@ -1,6 +1,6 @@
 import { Users } from './user.model';
 
-import { REPOSITORIES } from 'src/constants';
+import { REPOSITORIES } from 'src/common/constants';
 
 export const userProvider = [
   {

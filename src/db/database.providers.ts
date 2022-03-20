@@ -2,7 +2,7 @@ import { ConfigService } from '@nestjs/config';
 
 import { Sequelize } from 'sequelize-typescript';
 
-import { PROVIDERS, DATABASE_CONFIG } from '../constants';
+import { PROVIDERS, DATABASE_CONFIG } from '../common/constants';
 
 import { Users } from '../user/user.model';
 
