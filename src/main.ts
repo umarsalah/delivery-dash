@@ -9,6 +9,7 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  app.setGlobalPrefix('api/v1');
   const userService = app.get(UserService);
   app.useGlobalGuards(new AuthGuards(userService, new Reflector()));
   app.useGlobalGuards(new RolesGuard(new Reflector()));
