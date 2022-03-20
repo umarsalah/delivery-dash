@@ -8,9 +8,9 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const userService = app.get(UserService);
 
   app.setGlobalPrefix('api/v1');
-  const userService = app.get(UserService);
   app.useGlobalGuards(new AuthGuards(userService, new Reflector()));
   app.useGlobalGuards(new RolesGuard(new Reflector()));
   app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));

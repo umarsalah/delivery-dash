@@ -16,22 +16,18 @@ export class AuthGuards implements CanActivate {
       'public',
       context.getHandler(),
     );
-
     if (isPublic) {
       return true;
     }
 
     const request = context.switchToHttp().getRequest();
-
     const { token } = request.headers;
-
     if (!token) {
       return false;
     }
 
     const decoded: any = await verifyToken(token, 'secret');
     const userFromDb = await this.userService.getUserByEmail(decoded.email);
-
     if (!userFromDb) {
       return false;
     }
