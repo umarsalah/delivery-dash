@@ -13,6 +13,13 @@ export class UserService {
     private userRepository: typeof Users,
   ) {}
 
+  getUserByEmail(email: string) {
+    return this.userRepository.findOne({
+      where: { email },
+      attributes: ['id', 'firstName', 'lastName', 'type'],
+    });
+  }
+
   async login(email: string, password: string): Promise<any> {
     const user = await this.userRepository.findOne({
       where: { email },
@@ -26,7 +33,7 @@ export class UserService {
       throw new HttpException(ERRORS.WRONG_PASSWORD, HttpStatus.BAD_REQUEST);
     }
 
-    const token = jwt.sign({ username: user.firstName }, 'secret', {
+    const token = jwt.sign({ user: user.email }, 'secret', {
       expiresIn: '8h',
     });
 
@@ -51,7 +58,7 @@ export class UserService {
     } else {
       body.password = await hashPassword(body.password);
       const user = await this.userRepository.create(body);
-      const token = jwt.sign({ username: user.email }, 'secret', {
+      const token = jwt.sign({ user: user.email }, 'secret', {
         expiresIn: '8h',
       });
 
