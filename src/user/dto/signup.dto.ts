@@ -1,4 +1,5 @@
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { IsEmail, IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import { RoleStatus } from 'src/common/constants';
 
 export class SignupDto {
   @IsEmail()
@@ -22,8 +23,10 @@ export class SignupDto {
   phoneNumber: string;
 
   @IsNotEmpty()
-  @IsString()
-  type: string;
+  @IsEnum(RoleStatus, {
+    message: 'Type is not valid',
+  })
+  type: RoleStatus;
 
   @IsNotEmpty()
   @IsString()

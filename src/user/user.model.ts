@@ -8,7 +8,7 @@ import {
   AutoIncrement,
 } from 'sequelize-typescript';
 
-type RoleStatus = 'USER' | 'ADMIN';
+import { RoleStatus } from 'src/common/constants';
 
 @Table({
   tableName: 'Users',

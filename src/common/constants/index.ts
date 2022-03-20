@@ -6,6 +6,12 @@ export const PROVIDERS = {
 export const REPOSITORIES = {
   USER_REPOSITORY: 'USER_REPOSITORY',
 };
+
+export enum RoleStatus {
+  ADMIN = 'admin',
+  USER = 'user',
+}
+
 export const ERRORS = {
   LOGIN_ERROR: 'Email or password is incorrect',
   USER_NOT_FOUND: 'User not found',
