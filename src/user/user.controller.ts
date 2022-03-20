@@ -26,15 +26,14 @@ export class UserController {
     return this.userService.getAllUsers();
   }
 
-  @Get('users/:userid')
-  @Roles('admin')
-  async getUser(@Param('userid') userid: number) {
+  @Get('users/:userId')
+  async getUser(@Param('userId') userid: number) {
     return this.userService.getUser(userid);
   }
 
-  @Delete('users/:userid')
+  @Delete('users/:userId')
   @Roles('admin')
-  async deleteUser(@Param('userid') userid: number) {
-    return this.userService.deleteUser(userid);
+  async deleteUser(@Param('userId') userId: number) {
+    return this.userService.deleteUser(userId);
   }
 }

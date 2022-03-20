@@ -2,10 +2,13 @@ import {
   Table,
   Column,
   Model,
-  AutoIncrement,
-  PrimaryKey,
   Default,
+  DataType,
+  PrimaryKey,
+  AutoIncrement,
 } from 'sequelize-typescript';
+
+type RoleStatus = 'USER' | 'ADMIN';
 
 @Table({
   tableName: 'Users',
@@ -33,8 +36,8 @@ export class Users extends Model {
   @Column
   phoneNumber: string;
 
-  @Column
-  type: string;
+  @Column(DataType.ENUM('admin', 'user'))
+  type: RoleStatus;
 
   @Default(new Date())
   @Column
