@@ -10,6 +10,7 @@ export const REPOSITORIES = {
 export enum RoleStatus {
   ADMIN = 'admin',
   USER = 'user',
+  DELIVERY = 'delivery',
 }
 
 export const ERRORS = {
