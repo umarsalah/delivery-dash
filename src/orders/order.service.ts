@@ -10,10 +10,13 @@ export class OrdersService {
     private ordersRepository: typeof Orders,
   ) {}
 
-  getAllOrders(): Promise<any> {
+  getAllOrders(): Promise<object[]> {
     return this.ordersRepository.findAll();
   }
-  getOrderById(id: number): Promise<any> {
+  getOrderById(id: number): Promise<object> {
     return this.ordersRepository.findOne({ where: { id } });
+  }
+  deleteOrderById(id: number): Promise<number> {
+    return this.ordersRepository.destroy({ where: { id } });
   }
 }
