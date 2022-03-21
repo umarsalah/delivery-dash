@@ -52,7 +52,10 @@ export class SignupDto {
   @IsNotEmpty()
   @IsObject()
   address: {
-    longitude: number;
-    latitude: number;
+    city: string;
+    street: string;
+    neareastLandmark: string;
+    longitude: string;
+    latitude: string;
   };
 }
