@@ -5,7 +5,7 @@ import { OrdersService } from './order.service';
 import { Public, Roles } from 'src/common/decorators';
 
 @Controller('orders')
-export class OrderController {
+export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
   @Get()
