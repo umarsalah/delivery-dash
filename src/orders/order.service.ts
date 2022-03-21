@@ -10,7 +10,10 @@ export class OrdersService {
     private ordersRepository: typeof Orders,
   ) {}
 
-  getData(): string {
-    return 'this is order service';
+  getAllOrders(): Promise<any> {
+    return this.ordersRepository.findAll();
+  }
+  getOrderById(id: number): Promise<any> {
+    return this.ordersRepository.findOne({ where: { id } });
   }
 }
