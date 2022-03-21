@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 
 import { REPOSITORIES } from 'src/common/constants';
+import { OrderDto } from './dto';
 import { Orders } from './order.model';
 
 @Injectable()
@@ -18,5 +19,9 @@ export class OrdersService {
   }
   deleteOrderById(id: number): Promise<number> {
     return this.ordersRepository.destroy({ where: { id } });
+  }
+  createOrder(order: OrderDto, userId: number): OrderDto {
+    console.log(userId);
+    return order;
   }
 }

@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, Param, Delete } from '@nestjs/common';
+import {
+  Get,
+  Body,
+  Post,
+  Param,
+  Delete,
+  Controller,
+  ParseIntPipe,
+} from '@nestjs/common';
 
 import { Public, Roles } from '../common/decorators';
 import { LoginUserDto, SignupDto } from './dto';
@@ -27,13 +35,14 @@ export class UserController {
   }
 
   @Get('users/:userId')
-  async getUser(@Param('userId') userid: number) {
+  @Public()
+  async getUser(@Param('userId', ParseIntPipe) userid: number) {
     return this.userService.getUser(userid);
   }
 
   @Delete('users/:userId')
   @Roles('admin')
-  async deleteUser(@Param('userId') userId: number) {
+  async deleteUser(@Param('userId', ParseIntPipe) userId: number) {
     return this.userService.deleteUser(userId);
   }
 }

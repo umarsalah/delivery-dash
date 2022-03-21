@@ -1,4 +1,10 @@
-import { IsEmail, IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  IsObject,
+  IsString,
+} from 'class-validator';
 import { Transform, TransformFnParams } from 'class-transformer';
 import { RoleStatus } from 'src/common/constants';
 
@@ -42,4 +48,11 @@ export class SignupDto {
   @IsNotEmpty()
   @IsString()
   updatedBy: string;
+
+  @IsNotEmpty()
+  @IsObject()
+  address: {
+    longitude: number;
+    latitude: number;
+  };
 }
