@@ -59,12 +59,12 @@ module.exports = {
       created_at: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: new Date().toISOString(),
+        defaultValue: new Date(),
       },
       updated_at: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: new Date().toISOString(),
+        defaultValue: new Date(),
       },
       created_by: {
         type: Sequelize.STRING,
@@ -76,8 +76,8 @@ module.exports = {
       },
     });
   },
-
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async down(queryInterface, Sequelize) {
-    await queryInterface.removeColumn('Orders');
+    await queryInterface.dropTable('Orders');
   },
 };

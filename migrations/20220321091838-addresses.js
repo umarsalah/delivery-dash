@@ -2,46 +2,42 @@
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Users', {
+    await queryInterface.createTable('Addresses', {
       id: {
-        type: Sequelize.INTEGER,
-        primaryKey: true,
+        allowNull: false,
         autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER,
       },
-      first_name: {
+      city: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      street: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      nearest_landmark: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      longitude: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      last_name: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      email: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true,
-      },
-      password: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      type: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      phone_number: {
+      latitude: {
         type: Sequelize.STRING,
         allowNull: false,
       },
       created_at: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: new Date().toISOString(),
+        defaultValue: new Date(),
       },
       updated_at: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: new Date().toISOString(),
+        defaultValue: new Date(),
       },
       created_by: {
         type: Sequelize.STRING,
@@ -54,7 +50,8 @@ module.exports = {
     });
   },
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Users');
+    await queryInterface.dropTable('Addresses');
   },
 };

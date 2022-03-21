@@ -2,42 +2,54 @@
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Addresses', {
+    await queryInterface.createTable('Users', {
       id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
         type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
       },
-      city: {
-        type: Sequelize.STRING,
-        allowNull: true,
+      address_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Addresses',
+          key: 'id',
+        },
       },
-      street: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
-      nearest_landmark: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
-      longitude: {
+      first_name: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      latitude: {
+      last_name: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      email: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      password: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      type: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      phone_number: {
         type: Sequelize.STRING,
         allowNull: false,
       },
       created_at: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: new Date().toISOString(),
+        defaultValue: new Date(),
       },
       updated_at: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: new Date().toISOString(),
+        defaultValue: new Date(),
       },
       created_by: {
         type: Sequelize.STRING,
@@ -50,7 +62,8 @@ module.exports = {
     });
   },
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Addresses');
+    await queryInterface.dropTable('Users');
   },
 };
