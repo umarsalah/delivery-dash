@@ -2,58 +2,35 @@
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Orders', {
+    await queryInterface.createTable('Users', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
       },
-      user_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'Users',
-          key: 'id',
-        },
-      },
-      deliverer_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'Users',
-          key: 'id',
-        },
-      },
-      pickup_address_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'Addresses',
-          key: 'id',
-        },
-      },
-      droppoff_address_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'Addresses',
-          key: 'id',
-        },
-      },
-      is_delivered: {
+      first_name: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      is_paid: {
+      last_name: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      is_pickedup: {
+      email: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      password: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      total_price: {
-        type: Sequelize.INTEGER,
+      type: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      phone_number: {
+        type: Sequelize.STRING,
         allowNull: false,
       },
       created_at: {
@@ -78,6 +55,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.removeColumn('Orders');
+    await queryInterface.dropTable('Users');
   },
 };

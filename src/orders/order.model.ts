@@ -2,12 +2,13 @@ import {
   Model,
   Table,
   Column,
-  PrimaryKey,
-  AutoIncrement,
-  ForeignKey,
   Default,
+  PrimaryKey,
+  ForeignKey,
+  AutoIncrement,
 } from 'sequelize-typescript';
 
+import { Addresses } from '../addresses/addresses.model';
 import { Users } from '../user/user.model';
 
 @Table({
@@ -29,13 +30,13 @@ export class Orders extends Model {
   @Column
   delivererId: number;
 
-  //   @ForeignKey(() => Addresses)
-  //   @Column
-  //   pickupAddressId: number;
+  @ForeignKey(() => Addresses)
+  @Column
+  pickupAddressId: number;
 
-  //   @ForeignKey(() => Addresses)
-  //   @Column
-  //   droppoffAddressId: number;
+  @ForeignKey(() => Addresses)
+  @Column
+  droppoffAddressId: number;
 
   @Column
   isDelivered: boolean;

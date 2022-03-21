@@ -5,6 +5,8 @@ export const PROVIDERS = {
 };
 export const REPOSITORIES = {
   USER_REPOSITORY: 'USER_REPOSITORY',
+  ORDERS_REPOSITORY: 'ORDERS_REPOSITORY',
+  ADDRESSES_REPOSITORY: 'Addresses_REPOSITORY',
 };
 
 export enum RoleStatus {

@@ -5,9 +5,11 @@ import {
   Default,
   DataType,
   PrimaryKey,
+  ForeignKey,
   AutoIncrement,
 } from 'sequelize-typescript';
 
+import { Addresses } from 'src/addresses/addresses.model';
 import { RoleStatus } from 'src/common/constants';
 
 @Table({
@@ -20,6 +22,10 @@ export class Users extends Model {
   @AutoIncrement
   @Column
   id: number;
+
+  @ForeignKey(() => Addresses)
+  @Column
+  addressId: number;
 
   @Column
   firstName: string;
