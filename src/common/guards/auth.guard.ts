@@ -1,8 +1,8 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 
-import { UserService } from 'src/user/user.service';
-import { verifyToken } from 'src/utils/jwt';
+import { UserService } from 'src/modules/user/user.service';
+import { verifyToken } from 'src/common/utils/jwt';
 
 @Injectable()
 export class AuthGuards implements CanActivate {
@@ -32,7 +32,7 @@ export class AuthGuards implements CanActivate {
       return false;
     }
 
-    request.user = userFromDb.type;
+    request.user = userFromDb;
     return true;
   }
 }

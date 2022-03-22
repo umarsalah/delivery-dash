@@ -1,18 +1,17 @@
 import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 
-import * as jwt from 'jsonwebtoken';
-
-import { REPOSITORIES, ERRORS, UserObject, User } from '../common/constants';
-import { Addresses } from 'src/addresses/addresses.model';
-import { comparePassword, hashPassword } from 'src/utils';
+import { REPOSITORIES, ERRORS, UserObject, User } from '../../common/constants';
+import { AddressService } from 'src/modules/address/address.service';
+import { comparePassword, hashPassword } from 'src/common/utils';
+import { Addresses } from 'src/modules/address/address.model';
+import { generateToken } from 'src/common/utils/jwt';
 import { Users } from './user.model';
-import { AddressesService } from 'src/addresses/addresses.service';
 
 @Injectable()
 export class UserService {
   constructor(
-    @Inject(AddressesService)
-    private readonly addressService: AddressesService,
+    @Inject(AddressService)
+    private readonly addressService: AddressService,
     @Inject(REPOSITORIES.USER_REPOSITORY)
     private userRepository: typeof Users,
     @Inject(REPOSITORIES.ADDRESSES_REPOSITORY)
@@ -40,14 +39,10 @@ export class UserService {
       throw new HttpException(ERRORS.LOGIN_ERROR, HttpStatus.BAD_REQUEST);
     }
 
-    const token = jwt.sign({ user: user.email }, 'secret', {
-      expiresIn: '8h',
-    });
-
     return {
       user: user.firstName,
       email: user.email,
-      token,
+      token: generateToken(user.email),
     };
   }
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -55,9 +50,7 @@ export class UserService {
   async signup(body): Promise<UserObject> {
     const { address, ...userObj } = body;
 
-    const user = await this.userRepository.findOne({
-      where: { email: userObj.email, deletedAt: null },
-    });
+    const user = await this.getUserByEmail(userObj.email);
     if (user) {
       throw new HttpException(
         {
@@ -73,7 +66,6 @@ export class UserService {
       address.longitude,
       address.latitude,
     );
-    console.log(addressId);
 
     if (!addressId) {
       const userAddress = await this.addressRepository.create({
@@ -90,14 +82,10 @@ export class UserService {
       await this.userRepository.create({ ...userObj, addressId: addressId });
     }
 
-    const token = jwt.sign({ user: user.email }, 'secret', {
-      expiresIn: '8h',
-    });
-
     return {
       user: user.firstName,
       email: user.email,
-      token,
+      token: generateToken(user.email),
     };
   }
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

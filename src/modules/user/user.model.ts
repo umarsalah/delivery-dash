@@ -8,7 +8,7 @@ import {
   AutoIncrement,
 } from 'sequelize-typescript';
 
-import { Addresses } from 'src/addresses/addresses.model';
+import { Addresses } from 'src/modules/address/address.model';
 import { RoleStatus } from 'src/common/constants';
 
 @Table({
@@ -20,34 +20,40 @@ import { RoleStatus } from 'src/common/constants';
 export class Users extends Model {
   @PrimaryKey
   @AutoIncrement
-  @Column
+  @Column(DataType.INTEGER)
   id: number;
 
   @ForeignKey(() => Addresses)
-  @Column
+  @Column(DataType.INTEGER)
   addressId: number;
 
-  @Column
+  @Column(DataType.STRING)
   firstName: string;
 
-  @Column
+  @Column(DataType.STRING)
   lastName: string;
 
-  @Column
+  @Column(DataType.STRING)
   email: string;
 
-  @Column
+  @Column(DataType.STRING)
   password: string;
 
-  @Column
+  @Column(DataType.STRING)
   phoneNumber: string;
 
-  @Column(DataType.ENUM('admin', 'user'))
+  @Column(DataType.ENUM(RoleStatus.ADMIN, RoleStatus.USER, RoleStatus.DELIVERY))
   type: RoleStatus;
 
-  @Column
+  @Column(DataType.DATE)
+  createdAt: Date;
+
+  @Column(DataType.DATE)
+  updatedAt: Date;
+
+  @Column(DataType.STRING)
   createdBy: string;
 
-  @Column
+  @Column(DataType.STRING)
   updatedBy: string;
 }

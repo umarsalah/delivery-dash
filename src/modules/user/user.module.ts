@@ -4,12 +4,12 @@ import { UserService } from './user.service';
 import { UserProvider } from './user.provider';
 import { UserController } from './user.controller';
 import { DatabaseModule } from '../db/database.module';
-import { AddressesProvider } from 'src/addresses/addresses.provider';
-import { AddressesModule } from 'src/addresses/addresses.module';
+import { AddressProvider } from 'src/modules/address/address.provider';
+import { AddressesModule } from 'src/modules/address/address.module';
 
 @Module({
   imports: [AddressesModule, DatabaseModule],
   controllers: [UserController],
-  providers: [UserService, ...UserProvider, ...AddressesProvider],
+  providers: [UserService, ...UserProvider, ...AddressProvider],
 })
 export class UserModule {}

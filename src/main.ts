@@ -2,7 +2,7 @@ import { NestFactory, Reflector } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 
 import { AuthGuards, RolesGuard } from './common/guards';
-import { UserService } from './user/user.service';
+import { UserService } from './modules/user/user.service';
 
 import { AppModule } from './app.module';
 

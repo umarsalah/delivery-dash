@@ -2,12 +2,13 @@ import {
   Model,
   Table,
   Column,
+  DataType,
   PrimaryKey,
   ForeignKey,
   AutoIncrement,
 } from 'sequelize-typescript';
 
-import { Addresses } from '../addresses/addresses.model';
+import { Addresses } from '../address/address.model';
 import { Users } from '../user/user.model';
 
 @Table({
@@ -19,40 +20,40 @@ import { Users } from '../user/user.model';
 export class Orders extends Model {
   @PrimaryKey
   @AutoIncrement
-  @Column
+  @Column(DataType.INTEGER)
   id: number;
 
   @ForeignKey(() => Users)
-  @Column
+  @Column(DataType.INTEGER)
   userId: number;
 
   @ForeignKey(() => Users)
-  @Column
+  @Column(DataType.INTEGER)
   delivererId: number;
 
   @ForeignKey(() => Addresses)
-  @Column
+  @Column(DataType.INTEGER)
   pickupAddressId: number;
 
   @ForeignKey(() => Addresses)
-  @Column
+  @Column(DataType.INTEGER)
   droppoffAddressId: number;
 
-  @Column
+  @Column(DataType.BOOLEAN)
   isDelivered: boolean;
 
-  @Column
+  @Column(DataType.BOOLEAN)
   isPaid: boolean;
 
-  @Column
+  @Column(DataType.BOOLEAN)
   isPickedup: boolean;
 
-  @Column
+  @Column(DataType.NUMBER)
   totalPrice: number;
 
-  @Column
+  @Column(DataType.STRING)
   createdBy: string;
 
-  @Column
+  @Column(DataType.STRING)
   updatedBy: string;
 }

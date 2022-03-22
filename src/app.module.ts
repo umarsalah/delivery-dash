@@ -4,9 +4,9 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
-import { DatabaseModule } from './db/database.module';
-import { OrderModule } from './orders/order.module';
-import { UserModule } from './user/user.module';
+import { DatabaseModule } from './modules/db/database.module';
+import { OrderModule } from './modules/order/order.module';
+import { UserModule } from './modules/user/user.module';
 
 import configFile from 'config';
 

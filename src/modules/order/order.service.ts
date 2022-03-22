@@ -1,13 +1,13 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
-import { Addresses } from 'src/addresses/addresses.model';
+import { Addresses } from 'src/modules/address/address.model';
 
 import { ERRORS, REPOSITORIES } from 'src/common/constants';
-import { Users } from 'src/user/user.model';
+import { Users } from 'src/modules/user/user.model';
 import { Orders } from './order.model';
 import { OrderDto } from './dto';
 
 @Injectable()
-export class OrdersService {
+export class OrderService {
   constructor(
     @Inject(REPOSITORIES.ORDERS_REPOSITORY)
     private ordersRepository: typeof Orders,

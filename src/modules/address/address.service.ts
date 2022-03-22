@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { REPOSITORIES } from 'src/common/constants';
-import { Addresses } from './addresses.model';
+import { Addresses } from './address.model';
 
 @Injectable()
-export class AddressesService {
+export class AddressService {
   constructor(
     @Inject(REPOSITORIES.ADDRESSES_REPOSITORY)
     private readonly addressesRepository: typeof Addresses,
