@@ -5,13 +5,16 @@ import { AuthGuards, RolesGuard } from './common/guards';
 import { UserService } from './modules/user/user.service';
 
 import { AppModule } from './app.module';
+import { MyLogger } from './modules/logger/logger.service';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  const userService = app.get(UserService);
+  const app = await NestFactory.create(AppModule, {
+    bufferLogs: true,
+  });
 
   app.setGlobalPrefix('api/v1');
-  app.useGlobalGuards(new AuthGuards(userService, new Reflector()));
+  app.useLogger(app.get(MyLogger));
+  app.useGlobalGuards(new AuthGuards(app.get(UserService), new Reflector()));
   app.useGlobalGuards(new RolesGuard(new Reflector()));
   app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
 

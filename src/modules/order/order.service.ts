@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { Addresses } from 'src/modules/address/address.model';
 
 import { ERRORS, REPOSITORIES } from 'src/common/constants';
+import { MyLogger } from '../logger/logger.service';
 import { Users } from 'src/modules/user/user.model';
 import { Orders } from './order.model';
 import { OrderDto } from './dto';
@@ -9,6 +10,7 @@ import { OrderDto } from './dto';
 @Injectable()
 export class OrderService {
   constructor(
+    private readonly logger: MyLogger,
     @Inject(REPOSITORIES.ORDERS_REPOSITORY)
     private ordersRepository: typeof Orders,
     @Inject(REPOSITORIES.ADDRESSES_REPOSITORY)
