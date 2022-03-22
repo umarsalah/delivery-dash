@@ -29,7 +29,7 @@ export class Orders extends Model {
 
   @ForeignKey(() => Users)
   @Column(DataType.INTEGER)
-  delivererId: number;
+  delivererId?: number;
 
   @ForeignKey(() => Addresses)
   @Column(DataType.INTEGER)

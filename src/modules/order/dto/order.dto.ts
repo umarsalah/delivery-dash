@@ -1,5 +1,6 @@
 import {
   IsBoolean,
+  IsDefined,
   IsNotEmpty,
   IsNumber,
   IsObject,
@@ -28,6 +29,7 @@ export class OrderDto {
   totalPrice: number;
 
   @IsNotEmpty()
+  @IsDefined()
   @IsObject()
   pickupAddress: {
     city: string;
@@ -38,6 +40,7 @@ export class OrderDto {
   };
 
   @IsNotEmpty()
+  @IsDefined()
   @IsObject()
   dropoffAddress: {
     city: string;

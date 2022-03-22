@@ -1,4 +1,5 @@
 import {
+  IsDefined,
   IsEmail,
   IsEnum,
   IsNotEmpty,
@@ -62,6 +63,7 @@ export class SignupDto {
 
   @IsNotEmpty()
   @IsObject()
+  @IsDefined()
   address: {
     city: string;
     street: string;
