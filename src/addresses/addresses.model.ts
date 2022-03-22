@@ -1,9 +1,10 @@
-import { Table, Model, Column, Default } from 'sequelize-typescript';
+import { Table, Model, Column } from 'sequelize-typescript';
 
 @Table({
   tableName: 'Addresses',
-  timestamps: false,
+  timestamps: true,
   underscored: true,
+  paranoid: true,
 })
 export class Addresses extends Model {
   @Column({
@@ -42,14 +43,6 @@ export class Addresses extends Model {
     allowNull: false,
   })
   latitude: string;
-
-  @Default(new Date().toISOString())
-  @Column
-  createdAt: Date;
-
-  @Default(new Date().toISOString())
-  @Column
-  updatedAt: Date;
 
   @Column
   createdBy: string;

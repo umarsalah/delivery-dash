@@ -42,7 +42,7 @@ export class OrdersController {
   async createOrder(
     @Body() order: OrderDto,
     @Param('userId', ParseIntPipe) userId: number,
-  ): Promise<OrderDto> {
+  ): Promise<string> {
     return this.ordersService.createOrder(order, userId);
   }
 }

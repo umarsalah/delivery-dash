@@ -9,7 +9,10 @@ export class AddressesService {
     private readonly addressesRepository: typeof Addresses,
   ) {}
 
-  getData(): string {
-    return 'this is address service';
+  async checkAddress(longitude: number, latitude: number): Promise<number> {
+    const address = await this.addressesRepository.findOne({
+      where: { longitude, latitude },
+    });
+    return address.id;
   }
 }

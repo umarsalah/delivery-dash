@@ -1,8 +1,7 @@
 import {
+  Model,
   Table,
   Column,
-  Model,
-  Default,
   DataType,
   PrimaryKey,
   ForeignKey,
@@ -16,6 +15,7 @@ import { RoleStatus } from 'src/common/constants';
   tableName: 'Users',
   timestamps: true,
   underscored: true,
+  paranoid: true,
 })
 export class Users extends Model {
   @PrimaryKey
@@ -44,14 +44,6 @@ export class Users extends Model {
 
   @Column(DataType.ENUM('admin', 'user'))
   type: RoleStatus;
-
-  @Default(new Date())
-  @Column
-  createdAt: Date;
-
-  @Default(new Date())
-  @Column
-  updatedAt: Date;
 
   @Column
   createdBy: string;

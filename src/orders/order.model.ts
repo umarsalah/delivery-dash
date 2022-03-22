@@ -2,7 +2,6 @@ import {
   Model,
   Table,
   Column,
-  Default,
   PrimaryKey,
   ForeignKey,
   AutoIncrement,
@@ -15,6 +14,7 @@ import { Users } from '../user/user.model';
   tableName: 'Orders',
   timestamps: true,
   underscored: true,
+  paranoid: true,
 })
 export class Orders extends Model {
   @PrimaryKey
@@ -49,14 +49,6 @@ export class Orders extends Model {
 
   @Column
   totalPrice: number;
-
-  @Default(new Date())
-  @Column
-  createdAt: Date;
-
-  @Default(new Date())
-  @Column
-  updatedAt: Date;
 
   @Column
   createdBy: string;

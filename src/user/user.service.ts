@@ -3,14 +3,20 @@ import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 import * as jwt from 'jsonwebtoken';
 
 import { REPOSITORIES, ERRORS, UserObject, User } from '../common/constants';
+import { Addresses } from 'src/addresses/addresses.model';
 import { comparePassword, hashPassword } from 'src/utils';
 import { Users } from './user.model';
+import { AddressesService } from 'src/addresses/addresses.service';
 
 @Injectable()
 export class UserService {
   constructor(
+    @Inject(AddressesService)
+    private readonly addressService: AddressesService,
     @Inject(REPOSITORIES.USER_REPOSITORY)
     private userRepository: typeof Users,
+    @Inject(REPOSITORIES.ADDRESSES_REPOSITORY)
+    private addressRepository: typeof Addresses,
   ) {}
 
   getUserByEmail(email: string) {
@@ -19,7 +25,8 @@ export class UserService {
       attributes: ['id', 'firstName', 'lastName', 'type'],
     });
   }
-
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // login user
   async login(email: string, password: string): Promise<UserObject> {
     const user = await this.userRepository.findOne({
       where: { email },
@@ -43,9 +50,13 @@ export class UserService {
       token,
     };
   }
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //  Create User in DB and add address to DB
   async signup(body): Promise<UserObject> {
+    const { address, ...userObj } = body;
+
     const user = await this.userRepository.findOne({
-      where: { email: body.email },
+      where: { email: userObj.email, deletedAt: null },
     });
     if (user) {
       throw new HttpException(
@@ -55,28 +66,50 @@ export class UserService {
         },
         HttpStatus.FORBIDDEN,
       );
-    } else {
-      body.password = await hashPassword(body.password);
-      const user = await this.userRepository.create(body);
-      const token = jwt.sign({ user: user.email }, 'secret', {
-        expiresIn: '8h',
+    }
+    userObj.password = await hashPassword(userObj.password);
+
+    const addressId = await this.addressService.checkAddress(
+      address.longitude,
+      address.latitude,
+    );
+    console.log(addressId);
+
+    if (!addressId) {
+      const userAddress = await this.addressRepository.create({
+        ...address,
+        createdBy: userObj.createdBy,
+        updatedBy: userObj.updatedBy,
       });
 
-      return {
-        user: user.firstName,
-        email: user.email,
-        token,
-      };
+      await this.userRepository.create({
+        ...userObj,
+        addressId: userAddress.id,
+      });
+    } else {
+      await this.userRepository.create({ ...userObj, addressId: addressId });
     }
-  }
 
+    const token = jwt.sign({ user: user.email }, 'secret', {
+      expiresIn: '8h',
+    });
+
+    return {
+      user: user.firstName,
+      email: user.email,
+      token,
+    };
+  }
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Get All Users from DB
   async getAllUsers(): Promise<User[]> {
     const users = await this.userRepository.findAll({
       attributes: ['id', 'firstName', 'lastName', 'email', 'type'],
     });
     return users;
   }
-
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Get User By id param from DB
   async getUser(id: number): Promise<User> {
     const user = await this.userRepository.findOne({
       where: { id },
@@ -84,7 +117,8 @@ export class UserService {
     });
     return user;
   }
-
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Delete User By id param from DB
   async deleteUser(id: number): Promise<number> {
     const user = await this.userRepository.findOne({
       where: { id },
@@ -104,3 +138,4 @@ export class UserService {
     return id;
   }
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

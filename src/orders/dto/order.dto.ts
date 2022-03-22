@@ -1,4 +1,10 @@
-import { IsBoolean, IsNotEmpty, IsNumber, IsObject } from 'class-validator';
+import {
+  IsBoolean,
+  IsNotEmpty,
+  IsNumber,
+  IsObject,
+  IsString,
+} from 'class-validator';
 
 export class OrderDto {
   @IsNotEmpty()
@@ -7,7 +13,7 @@ export class OrderDto {
 
   @IsNotEmpty()
   @IsBoolean()
-  isDelivred: boolean;
+  isDelivered: boolean;
 
   @IsNotEmpty()
   @IsBoolean()
@@ -23,11 +29,29 @@ export class OrderDto {
 
   @IsNotEmpty()
   @IsObject()
-  address: {
+  pickupAddress: {
     city: string;
     street: string;
     neareastLandmark: string;
     longitude: string;
     latitude: string;
   };
+
+  @IsNotEmpty()
+  @IsObject()
+  dropoffAddress: {
+    city: string;
+    street: string;
+    neareastLandmark: string;
+    longitude: string;
+    latitude: string;
+  };
+
+  @IsNotEmpty()
+  @IsString()
+  createdBy: string;
+
+  @IsNotEmpty()
+  @IsString()
+  updatedBy: string;
 }
