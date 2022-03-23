@@ -13,7 +13,6 @@ export const databaseProviders = [
     provide: PROVIDERS.DATABASE_PROVIDER,
     useFactory: (configService: ConfigService) => {
       const sequelize = new Sequelize({
-        dialect: 'mysql',
         ...configService.get(DATABASE_CONFIG),
       });
       sequelize.addModels([Users, Orders, Addresses]);

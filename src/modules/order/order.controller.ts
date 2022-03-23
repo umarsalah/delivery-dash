@@ -10,6 +10,7 @@ import {
 
 import { OrderService } from './order.service';
 
+import { User } from 'src/common/decorators/user.decorator';
 import { Public, Roles } from 'src/common/decorators';
 import { OrderDto } from './dto';
 
@@ -35,12 +36,12 @@ export class OrdersController {
     return this.ordersService.deleteOrderById(id);
   }
 
-  @Post('/:userId')
-  @Public()
+  @Post()
+  @Roles('user')
   createOrder(
     @Body() order: OrderDto,
-    @Param('userId', ParseIntPipe) userId: number,
+    @User() user: { id: number },
   ): Promise<string> {
-    return this.ordersService.createOrder(order, userId);
+    return this.ordersService.createOrder(order, user);
   }
 }
