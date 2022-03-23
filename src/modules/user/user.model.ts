@@ -2,6 +2,7 @@ import {
   Model,
   Table,
   Column,
+  Scopes,
   DataType,
   PrimaryKey,
   ForeignKey,
@@ -11,6 +12,25 @@ import {
 import { Addresses } from 'src/modules/address/address.model';
 import { RoleStatus } from 'src/common/constants';
 
+@Scopes(() => {
+  return {
+    notDeleted: {
+      where: {
+        deletedAt: null,
+      },
+      attributes: {
+        exclude: [
+          'deletedAt',
+          'password',
+          'createdAt',
+          'updatedAt',
+          'createdBy',
+          'updatedBy',
+        ],
+      },
+    },
+  };
+})
 @Table({
   tableName: 'Users',
   timestamps: true,

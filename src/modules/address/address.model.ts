@@ -5,8 +5,22 @@ import {
   DataType,
   PrimaryKey,
   AutoIncrement,
+  Scopes,
 } from 'sequelize-typescript';
 
+@Scopes(() => ({
+  basic: {
+    attributes: {
+      exclude: [
+        'deletedAt',
+        'createdAt',
+        'updatedAt',
+        'createdBy',
+        'updatedBy',
+      ],
+    },
+  },
+}))
 @Table({
   tableName: 'Addresses',
   timestamps: true,

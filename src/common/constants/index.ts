@@ -31,6 +31,7 @@ export type UserObject = {
 
 export type User = {
   id: number;
+  phoneNumber: string;
   firstName: string;
   lastName: string;
   email: string;

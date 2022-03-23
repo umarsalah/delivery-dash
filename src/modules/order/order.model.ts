@@ -6,11 +6,26 @@ import {
   PrimaryKey,
   ForeignKey,
   AutoIncrement,
+  Scopes,
 } from 'sequelize-typescript';
 
 import { Addresses } from '../address/address.model';
 import { Users } from '../user/user.model';
 
+@Scopes(() => ({
+  basic: {
+    attributes: {
+      exclude: [
+        'deletedAt',
+        'password',
+        'createdAt',
+        'updatedAt',
+        'createdBy',
+        'updatedBy',
+      ],
+    },
+  },
+}))
 @Table({
   tableName: 'Orders',
   timestamps: true,
