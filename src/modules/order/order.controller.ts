@@ -19,8 +19,7 @@ export class OrdersController {
   constructor(private readonly ordersService: OrderService) {}
 
   @Get()
-  // @Roles('admin', 'deliverer')
-  @Public()
+  @Roles('admin', 'deliverer')
   getAllOrders(): Promise<object[]> {
     return this.ordersService.getAllOrders();
   }

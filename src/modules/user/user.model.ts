@@ -14,10 +14,7 @@ import { RoleStatus } from 'src/common/constants';
 
 @Scopes(() => {
   return {
-    notDeleted: {
-      where: {
-        deletedAt: null,
-      },
+    basic: {
       attributes: {
         exclude: [
           'deletedAt',

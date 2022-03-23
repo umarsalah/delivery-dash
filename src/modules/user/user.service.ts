@@ -93,13 +93,13 @@ export class UserService {
 
   // Get All Users from DB
   async getAllUsers(): Promise<User[]> {
-    const users = await this.userRepository.scope('notDeleted').findAll();
+    const users = await this.userRepository.scope('basic').findAll();
     return users;
   }
 
   // Get User By id param from DB
   async getUser(id: number): Promise<object> {
-    const user = await this.userRepository.scope('notDeleted').findOne({
+    const user = await this.userRepository.scope('basic').findOne({
       where: { id },
     });
     if (user) {
@@ -113,7 +113,7 @@ export class UserService {
 
   // Delete User By id param from DB
   async deleteUser(id: number): Promise<number> {
-    const user = await this.userRepository.scope('notDeleted').findOne({
+    const user = await this.userRepository.scope('basic').findOne({
       where: { id },
     });
     checkUser(user);
