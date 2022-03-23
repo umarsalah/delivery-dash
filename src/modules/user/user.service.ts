@@ -21,7 +21,7 @@ export class UserService {
   getUserByEmail(email: string) {
     return this.userRepository.findOne({
       where: { email },
-      attributes: ['id', 'firstName', 'lastName', 'type'],
+      attributes: ['id', 'firstName', 'lastName', 'type', 'email'],
     });
   }
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -43,6 +43,7 @@ export class UserService {
       user: user.firstName,
       email: user.email,
       token: generateToken(user.email),
+      type: user.type,
     };
   }
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -70,8 +71,8 @@ export class UserService {
     if (!addressId) {
       const userAddress = await this.addressRepository.create({
         ...address,
-        createdBy: userObj.createdBy,
-        updatedBy: userObj.updatedBy,
+        createdBy: userObj.email,
+        updatedBy: userObj.email,
       });
 
       await this.userRepository.create({
@@ -79,12 +80,18 @@ export class UserService {
         addressId: userAddress.id,
       });
     } else {
-      await this.userRepository.create({ ...userObj, addressId: addressId });
+      await this.userRepository.create({
+        ...userObj,
+        addressId: addressId,
+        createdBy: userObj.email,
+        updatedBy: userObj.email,
+      });
     }
 
     return {
       user: user.firstName,
       email: user.email,
+      type: user.type,
       token: generateToken(user.email),
     };
   }

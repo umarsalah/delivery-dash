@@ -1,7 +1,7 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Addresses } from 'src/modules/address/address.model';
 
-import { ERRORS, REPOSITORIES } from 'src/common/constants';
+import { REPOSITORIES } from 'src/common/constants';
 import { Users } from 'src/modules/user/user.model';
 import { Orders } from './order.model';
 import { OrderDto } from './dto';
@@ -35,21 +35,9 @@ export class OrderService {
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Create Order in DB and add address to DB
-  async createOrder(order: OrderDto, userId: number): Promise<string> {
-    const { pickupAddress, dropoffAddress, createdBy, updatedBy, ...orderObj } =
-      order;
-    const actionUser = { createdBy, updatedBy };
-
-    const user = await this.usersRepository.findOne({ where: { id: userId } });
-    if (!user) {
-      throw new HttpException(
-        {
-          status: HttpStatus.FORBIDDEN,
-          error: ERRORS.USER_NOT_FOUND,
-        },
-        HttpStatus.FORBIDDEN,
-      );
-    }
+  async createOrder(order: OrderDto, user: any): Promise<string> {
+    const { pickupAddress, dropoffAddress, ...orderObj } = order;
+    const actionUser = { createdBy: user.email, updatedBy: user.email };
 
     const [pickupAddressObj, dropoffAddressObj] = await Promise.all([
       this.addressesRepository.create({
@@ -63,7 +51,7 @@ export class OrderService {
     ]);
 
     await this.ordersRepository.create({
-      userId,
+      userId: user.id,
       ...orderObj,
       ...actionUser,
       pickupAddressId: pickupAddressObj.id,

@@ -26,6 +26,7 @@ export type UserObject = {
   user: string;
   email: string;
   token: string;
+  type: RoleStatus;
 };
 
 export type User = {

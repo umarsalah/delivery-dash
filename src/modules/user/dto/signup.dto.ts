@@ -54,14 +54,6 @@ export class SignupDto {
   type: RoleStatus;
 
   @IsNotEmpty()
-  @IsString()
-  createdBy: string;
-
-  @IsNotEmpty()
-  @IsString()
-  updatedBy: string;
-
-  @IsNotEmpty()
   @IsObject()
   @IsDefined()
   address: {

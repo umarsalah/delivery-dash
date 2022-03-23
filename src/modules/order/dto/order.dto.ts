@@ -4,7 +4,6 @@ import {
   IsNotEmpty,
   IsNumber,
   IsObject,
-  IsString,
 } from 'class-validator';
 
 export class OrderDto {
@@ -49,12 +48,4 @@ export class OrderDto {
     longitude: string;
     latitude: string;
   };
-
-  @IsNotEmpty()
-  @IsString()
-  createdBy: string;
-
-  @IsNotEmpty()
-  @IsString()
-  updatedBy: string;
 }
