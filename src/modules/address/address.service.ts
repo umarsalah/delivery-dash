@@ -13,6 +13,6 @@ export class AddressService {
     const address = await this.addressesRepository.findOne({
       where: { longitude, latitude },
     });
-    return address.id;
+    return address?.id;
   }
 }

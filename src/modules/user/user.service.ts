@@ -37,6 +37,7 @@ export class UserService {
     }
 
     return {
+      id: user.id,
       user: user.firstName,
       email: user.email,
       token: generateToken(user.email),
@@ -47,9 +48,10 @@ export class UserService {
   //  Create User in DB and add address to DB
   async signup(body): Promise<UserObject> {
     const { address, ...userObj } = body;
-    let addedAddress = 0;
+    let addedAddress: number;
 
     const user = await this.getUserByEmail(userObj.email);
+
     if (user) {
       throw new HttpException(
         {
@@ -75,7 +77,8 @@ export class UserService {
       } else {
         addedAddress = addressId;
       }
-      await this.userRepository.create({
+
+      const userFromDB = await this.userRepository.create({
         ...userObj,
         addressId: addedAddress,
         createdBy: userObj.email,
@@ -83,6 +86,7 @@ export class UserService {
       });
 
       return {
+        id: userFromDB.id,
         user: userObj.firstName,
         email: userObj.email,
         type: userObj.type,

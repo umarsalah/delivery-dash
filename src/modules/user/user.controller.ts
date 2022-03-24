@@ -36,8 +36,8 @@ export class UserController {
 
   @Get('users/:userId')
   @Public()
-  getUser(@Param('userId', ParseIntPipe) userid: number) {
-    return this.userService.getUser(userid);
+  getUser(@Param('userId', ParseIntPipe) userId: number) {
+    return this.userService.getUser(userId);
   }
 
   @Delete('users/:userId')

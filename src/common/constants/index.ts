@@ -23,6 +23,7 @@ export const ERRORS = {
 };
 
 export type UserObject = {
+  id: number;
   user: string;
   email: string;
   token: string;
