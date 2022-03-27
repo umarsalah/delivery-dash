@@ -24,6 +24,10 @@ export class UserService {
       where: { email },
     });
   }
+  async getUserType(userId): Promise<string> {
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    return user?.type;
+  }
 
   // login user
   async login(email: string, password: string): Promise<UserObject> {
