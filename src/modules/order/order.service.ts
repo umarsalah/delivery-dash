@@ -2,7 +2,6 @@ import { Inject, Injectable } from '@nestjs/common';
 import { Addresses } from 'src/modules/address/address.model';
 
 import { REPOSITORIES } from 'src/common/constants';
-import { Users } from 'src/modules/user/user.model';
 import { Orders } from './order.model';
 import { OrderDto } from './dto';
 import { createOrderObject } from './utils';
@@ -14,8 +13,6 @@ export class OrderService {
     private ordersRepository: typeof Orders,
     @Inject(REPOSITORIES.ADDRESSES_REPOSITORY)
     private addressesRepository: typeof Addresses,
-    @Inject(REPOSITORIES.USER_REPOSITORY)
-    private usersRepository: typeof Users,
   ) {}
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
