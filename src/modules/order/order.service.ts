@@ -29,17 +29,20 @@ export class OrderService {
     const order = await this.ordersRepository
       .scope('basic')
       .findOne({ where: { id } });
-    const pickupAddress = await this.addressesRepository
-      .scope('basic')
-      .findOne({
-        where: { id: order.pickupAddressId },
-      });
-    const dropoffAddress = await this.addressesRepository
-      .scope('basic')
-      .findOne({
-        where: { id: order.droppoffAddressId },
-      });
-    return createOrderObject(order, pickupAddress, dropoffAddress);
+    if (order) {
+      const pickupAddress = await this.addressesRepository
+        .scope('basic')
+        .findOne({
+          where: { id: order?.pickupAddressId },
+        });
+      const dropoffAddress = await this.addressesRepository
+        .scope('basic')
+        .findOne({
+          where: { id: order?.droppoffAddressId },
+        });
+      return createOrderObject(order, pickupAddress, dropoffAddress);
+    }
+    return null;
   }
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Delete Order By Id
