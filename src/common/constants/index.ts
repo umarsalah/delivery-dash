@@ -16,6 +16,12 @@ export enum RoleStatus {
   DELIVERY = 'delivery',
 }
 
+export const USERS = {
+  ADMIN: 'admin',
+  USER: 'user',
+  DELIVERY: 'delivery',
+};
+
 export const ERRORS = {
   LOGIN_ERROR: 'Email or password is incorrect',
   USER_NOT_FOUND: 'User not found',
