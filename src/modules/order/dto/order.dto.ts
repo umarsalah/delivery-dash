@@ -5,6 +5,7 @@ import {
   IsNumber,
   IsObject,
   IsOptional,
+  ValidateNested,
 } from 'class-validator';
 
 export class OrderDto {
@@ -35,6 +36,9 @@ export class OrderDto {
   @IsNotEmpty()
   @IsDefined()
   @IsObject()
+  @ValidateNested({
+    each: true,
+  })
   pickupAddress: {
     city: string;
     street: string;
@@ -46,6 +50,9 @@ export class OrderDto {
   @IsNotEmpty()
   @IsDefined()
   @IsObject()
+  @ValidateNested({
+    each: true,
+  })
   dropoffAddress: {
     city: string;
     street: string;

@@ -16,7 +16,7 @@ export class AddressService {
     return address?.id;
   }
 
-  findAddressById(addressId: number): Promise<object> {
+  findAddressById(addressId: number): Promise<Addresses> {
     return this.addressesRepository.scope('basic').findOne({
       where: { id: addressId },
     });

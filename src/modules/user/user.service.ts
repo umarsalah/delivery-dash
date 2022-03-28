@@ -1,11 +1,12 @@
 import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 
-import { REPOSITORIES, ERRORS, UserObject, User } from '../../common/constants';
 import { AddressService } from 'src/modules/address/address.service';
+
+import { REPOSITORIES, ERRORS, UserObject, User } from '../../common/constants';
 import { comparePassword, hashPassword } from 'src/common/utils';
-import { Addresses } from 'src/modules/address/address.model';
 import { checkUser, createUserObject } from './utils';
 import { generateToken } from 'src/common/utils/jwt';
+
 import { Users } from './user.model';
 
 @Injectable()
@@ -15,8 +16,6 @@ export class UserService {
     private readonly addressService: AddressService,
     @Inject(REPOSITORIES.USER_REPOSITORY)
     private userRepository: typeof Users,
-    @Inject(REPOSITORIES.ADDRESSES_REPOSITORY)
-    private addressRepository: typeof Addresses,
   ) {}
 
   getUserByEmail(email: string) {
@@ -50,7 +49,7 @@ export class UserService {
   }
 
   //  Create User in DB and add address to DB
-  async signup(body): Promise<UserObject> {
+  async signup(body): Promise<object> {
     const { address, ...userObj } = body;
     let addedAddress: number;
 
@@ -72,8 +71,7 @@ export class UserService {
         address.latitude,
       );
       if (!addressId) {
-        const newAddress = await this.addressRepository.create({
-          ...address,
+        const newAddress = await this.addressService.createAddress(address, {
           createdBy: userObj.email,
           updatedBy: userObj.email,
         });
@@ -93,8 +91,6 @@ export class UserService {
         id: userFromDB.id,
         user: userObj.firstName,
         email: userObj.email,
-        type: userObj.type,
-        token: generateToken(userObj.email),
       };
     }
   }
@@ -111,9 +107,8 @@ export class UserService {
       where: { id },
     });
     if (user) {
-      const address = await this.addressRepository.scope('basic').findOne({
-        where: { id: user.addressId },
-      });
+      const address = await this.addressService.findAddressById(user.addressId);
+
       return createUserObject(user, address);
     }
     return null;
