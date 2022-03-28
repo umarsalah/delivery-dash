@@ -4,21 +4,26 @@ import {
   IsNotEmpty,
   IsNumber,
   IsObject,
+  IsOptional,
 } from 'class-validator';
 
 export class OrderDto {
-  @IsNotEmpty()
-  @IsNumber()
-  delivererId: number;
-
+  @IsOptional()
   @IsNotEmpty()
   @IsBoolean()
   isDelivered: boolean;
 
+  @IsOptional()
+  @IsNotEmpty()
+  @IsNumber()
+  delivererId: number;
+
+  @IsOptional()
   @IsNotEmpty()
   @IsBoolean()
   isPaid: boolean;
 
+  @IsOptional()
   @IsNotEmpty()
   @IsBoolean()
   isPickedup: boolean;

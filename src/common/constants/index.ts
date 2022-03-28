@@ -7,6 +7,7 @@ export const REPOSITORIES = {
   USER_REPOSITORY: 'USER_REPOSITORY',
   ORDERS_REPOSITORY: 'ORDERS_REPOSITORY',
   ADDRESSES_REPOSITORY: 'Addresses_REPOSITORY',
+  NOTIFICATION_REPOSITORY: 'NOTIFICATION_REPOSITORY',
 };
 
 export enum RoleStatus {
@@ -20,6 +21,14 @@ export const ERRORS = {
   USER_NOT_FOUND: 'User not found',
   USER_ALREADY_EXIST: 'User already exist',
   USER_NOT_AUTHORIZED: 'User not authorized',
+};
+
+export const EVENTS = {
+  NEW_CREATED_ORDER: 'newCreatedOrder',
+};
+
+export const MESSAGES = {
+  NEW_ORDER_CREATED: 'New order created',
 };
 
 export type UserObject = {

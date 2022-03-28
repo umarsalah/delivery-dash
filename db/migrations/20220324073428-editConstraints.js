@@ -6,7 +6,7 @@ module.exports = {
     await queryInterface.sequelize.query(
       `
     ALTER TABLE Users
-    ADD not_archived VARCHAR(255) AS (CONCAT(email, '|' , if_null(deleted_at, ''))) UNIQUE;
+    ADD not_archived VARCHAR(255) AS (CONCAT(email, '|' , IFNULL(deleted_at, ''))) UNIQUE;
       `,
     );
   },

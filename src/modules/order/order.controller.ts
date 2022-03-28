@@ -37,11 +37,11 @@ export class OrdersController {
   }
 
   @Post()
-  @Roles('user')
+  @Roles('user', 'admin')
   createOrder(
     @Body() order: OrderDto,
     @User() user: { id: number },
-  ): Promise<string> {
+  ): Promise<object> {
     return this.ordersService.createOrder(order, user);
   }
 }

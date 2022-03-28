@@ -1,18 +1,22 @@
 import { Logger } from '@nestjs/common';
+import { Server, Socket } from 'socket.io';
+import { OnEvent } from '@nestjs/event-emitter';
 import {
+  OnGatewayInit,
   WebSocketServer,
   WebSocketGateway,
   OnGatewayDisconnect,
   OnGatewayConnection,
 } from '@nestjs/websockets';
 
-import { Server, Socket } from 'socket.io';
+import { OrderCreatedEvent } from '../order/events/order-created.event';
+import { EVENTS, RoleStatus } from 'src/common/constants';
 import { UserService } from '../user/user.service';
 
 @WebSocketGateway()
 // ws://localhost:3000/?userId=1
 export class TrackerGateway
-  implements OnGatewayConnection, OnGatewayDisconnect
+  implements OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit
 {
   constructor(private userService: UserService) {}
 
@@ -20,6 +24,10 @@ export class TrackerGateway
   webSocket: Server;
 
   private logger: Logger = new Logger('TrackerGateway');
+
+  afterInit() {
+    this.logger.log('TrackerGateway initialized');
+  }
 
   async handleConnection(client: Socket) {
     this.logger.log(`Client connected: ${client.handshake.query.userId[0]}`);
@@ -36,7 +44,10 @@ export class TrackerGateway
     this.logger.log(`Client disconnected: ${client.handshake.query.userId[0]}`);
   }
 
-  onNewOrder(client: Socket, data: any) {
-    this.webSocket.to(['delivery', 'admin']).emit('newOrder', data);
+  @OnEvent(EVENTS.NEW_CREATED_ORDER)
+  onNewCreatedOrder(event: OrderCreatedEvent) {
+    this.webSocket
+      .to(RoleStatus.DELIVERY)
+      .emit(EVENTS.NEW_CREATED_ORDER, event);
   }
 }

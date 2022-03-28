@@ -4,6 +4,7 @@ import { Sequelize } from 'sequelize-typescript';
 
 import { PROVIDERS, DATABASE_CONFIG } from '../../common/constants';
 
+import { Notification } from '../notification/notification.model';
 import { Addresses } from '../address/address.model';
 import { Orders } from '../order/order.model';
 import { Users } from '../user/user.model';
@@ -15,7 +16,7 @@ export const databaseProviders = [
       const sequelize = new Sequelize({
         ...configService.get(DATABASE_CONFIG),
       });
-      sequelize.addModels([Users, Orders, Addresses]);
+      sequelize.addModels([Users, Orders, Addresses, Notification]);
       return sequelize;
     },
     inject: [ConfigService],

@@ -18,7 +18,7 @@ module.exports = {
       },
       deliverer_id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: 'Users',
           key: 'id',
@@ -41,16 +41,12 @@ module.exports = {
         },
       },
       is_delivered: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
       },
       is_paid: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      is_pickedup: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
       },
       total_price: {
         type: Sequelize.INTEGER,
@@ -67,11 +63,11 @@ module.exports = {
         defaultValue: new Date(),
       },
       created_by: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
         allowNull: false,
       },
       updated_by: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
         allowNull: false,
       },
       deleted_at: {

@@ -1,12 +1,12 @@
 import {
   Model,
   Table,
+  Scopes,
   Column,
   DataType,
   PrimaryKey,
   ForeignKey,
   AutoIncrement,
-  Scopes,
 } from 'sequelize-typescript';
 
 import { Addresses } from '../address/address.model';
@@ -44,7 +44,7 @@ export class Orders extends Model {
 
   @ForeignKey(() => Users)
   @Column(DataType.INTEGER)
-  delivererId?: number;
+  delivererId: number;
 
   @ForeignKey(() => Addresses)
   @Column(DataType.INTEGER)
@@ -60,15 +60,17 @@ export class Orders extends Model {
   @Column(DataType.BOOLEAN)
   isPaid: boolean;
 
-  @Column(DataType.BOOLEAN)
-  isPickedup: boolean;
-
   @Column(DataType.NUMBER)
   totalPrice: number;
 
   @Column(DataType.STRING)
-  createdBy: string;
+  createdBy: number;
 
   @Column(DataType.STRING)
-  updatedBy: string;
+  updatedBy: number;
+
+  @Column(DataType.VIRTUAL(DataType.BOOLEAN))
+  get isPickedup() {
+    return !!this.delivererId;
+  }
 }
