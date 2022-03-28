@@ -15,4 +15,17 @@ export class AddressService {
     });
     return address?.id;
   }
+
+  findAddressById(addressId: number): Promise<object> {
+    return this.addressesRepository.scope('basic').findOne({
+      where: { id: addressId },
+    });
+  }
+
+  createAddress(address: object, actionUser: object): Promise<Addresses> {
+    return this.addressesRepository.create({
+      ...address,
+      ...actionUser,
+    });
+  }
 }

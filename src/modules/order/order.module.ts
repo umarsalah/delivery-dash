@@ -1,23 +1,18 @@
 import { Module } from '@nestjs/common';
-import { AddressProvider } from 'src/modules/address/address.provider';
 
-import { NotificationProvider } from '../notification/notification.provider';
+import { NotificationModule } from '../notification/notification.module';
 import { DatabaseModule } from 'src/modules/db/database.module';
-import { UserProvider } from 'src/modules/user/user.provider';
+import { AddressesModule } from '../address/address.module';
+import { UserModule } from '../user/user.module';
 
 import { OrdersController } from './order.controller';
 import { OrdersProvider } from './order.provider';
 import { OrderService } from './order.service';
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [DatabaseModule, UserModule, NotificationModule, AddressesModule],
+  providers: [OrderService, ...OrdersProvider],
   controllers: [OrdersController],
-  providers: [
-    OrderService,
-    ...OrdersProvider,
-    ...UserProvider,
-    ...AddressProvider,
-    ...NotificationProvider,
-  ],
+  exports: [OrderService],
 })
 export class OrderModule {}
