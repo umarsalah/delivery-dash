@@ -7,7 +7,7 @@ export default () => ({
     host: 'localhost',
     port: parseInt(process.env.DATABASE_PORT, 10) || 5432,
     username: process.env.DATABASE_USERNAME || 'root',
-    password: process.env.PROD_DATABASE_PASSWORD || '',
-    database: process.env.PROD_DATABASE_NAME || '',
+    password: process.env.PROD_DATABASE_PASSWORD || 'root',
+    database: process.env.PROD_DATABASE_NAME || 'test',
   },
 });

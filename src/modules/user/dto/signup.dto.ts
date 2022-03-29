@@ -6,7 +6,6 @@ import {
   IsObject,
   IsPhoneNumber,
   IsString,
-  ValidateNested,
 } from 'class-validator';
 import { Transform, TransformFnParams } from 'class-transformer';
 import { RoleStatus } from 'src/common/constants';
@@ -57,9 +56,6 @@ export class SignupDto {
   @IsNotEmpty()
   @IsObject()
   @IsDefined()
-  @ValidateNested({
-    each: true,
-  })
   address: {
     city: string;
     street: string;
