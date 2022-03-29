@@ -27,6 +27,15 @@ export class OrderService {
     return this.ordersRepository.scope('basic').findAll();
   }
 
+  calculatePriceFromAddress(pickupAddress: any, dropoffAddress: any) {
+    const distance = this.addressService.calculateDistance(
+      pickupAddress,
+      dropoffAddress,
+    );
+    const price = distance * 0.5;
+    return parseFloat(price.toFixed(2));
+  }
+
   // Get Order By Id
   async getOrderById(id: number): Promise<any> {
     const order = await this.ordersRepository
@@ -50,7 +59,12 @@ export class OrderService {
 
   // Create Order in DB and add address to DB
   async createOrder(order: OrderDto, user: any): Promise<object> {
-    const { pickupAddress, dropoffAddress, ...orderObj } = order;
+    const { pickupAddress, dropoffAddress } = order;
+    const totalPrice = this.calculatePriceFromAddress(
+      pickupAddress,
+      dropoffAddress,
+    );
+
     const actionUser = { createdBy: user.id, updatedBy: user.id };
 
     const [pickupAddressObj, dropoffAddressObj] = await Promise.all([
@@ -60,7 +74,7 @@ export class OrderService {
 
     const newOrder = await this.ordersRepository.create({
       userId: user.id,
-      ...orderObj,
+      totalPrice,
       ...actionUser,
       pickupAddressId: pickupAddressObj.id,
       droppoffAddressId: dropoffAddressObj.id,

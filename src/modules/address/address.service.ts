@@ -28,4 +28,22 @@ export class AddressService {
       ...actionUser,
     });
   }
+  calculateDistance(pickupAddress: any, dropoffAddress: any) {
+    const { latitude: pickupLat, longitude: pickupLng } = pickupAddress;
+    const { latitude: dropoffLat, longitude: dropoffLng } = dropoffAddress;
+
+    const R = 6371; // Radius of the earth in km
+    const dLat = (dropoffLat - pickupLat) * (Math.PI / 180); // deg2rad below
+    const dLon = (dropoffLng - pickupLng) * (Math.PI / 180);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(pickupLat * (Math.PI / 180)) *
+        Math.cos(dropoffLat * (Math.PI / 180)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const d = R * c; // Distance in km
+    return d;
+  }
 }
