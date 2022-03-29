@@ -48,6 +48,14 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
       },
+      is_pickedup: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
+      is_cancelled: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
       total_price: {
         type: Sequelize.INTEGER,
         allowNull: false,

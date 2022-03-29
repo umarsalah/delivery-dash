@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 
 import { Notification } from './notification.model';
-import { MESSAGES, REPOSITORIES } from 'src/common/constants';
+import { REPOSITORIES } from 'src/common/constants';
 
 @Injectable()
 export class NotificationService {
@@ -10,13 +10,27 @@ export class NotificationService {
     private readonly notificationRepository: typeof Notification,
   ) {}
 
-  createNotification(userId: number, orderId: number): Promise<Notification> {
+  createNotification(
+    userId: number,
+    orderId: number,
+    message: string,
+  ): Promise<Notification> {
     return this.notificationRepository.create({
-      userId: userId,
-      orderId: orderId,
+      userId,
+      orderId,
+      message,
       isRead: false,
       isActive: true,
-      message: MESSAGES.NEW_ORDER_CREATED,
     });
+  }
+  updateNotification(
+    userId: number,
+    orderId: number,
+    message: string,
+  ): Promise<any> {
+    return this.notificationRepository.update(
+      { message, isRead: true, isActive: false },
+      { where: { userId, orderId } },
+    );
   }
 }

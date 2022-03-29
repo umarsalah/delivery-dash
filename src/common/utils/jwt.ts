@@ -1,15 +1,11 @@
 import * as jwt from 'jsonwebtoken';
 
 export const verifyToken = (token, secret) =>
-  new Promise((resolve, reject) => {
-    jwt.verify(token, secret, (err, decode) => {
-      if (err) {
-        err.status(401);
-        reject(err);
-      } else {
-        resolve(decode);
-      }
-    });
+  jwt.verify(token, secret, (err, decode) => {
+    if (err) {
+      return false;
+    }
+    return decode;
   });
 
 export const generateToken = (email: string) => {

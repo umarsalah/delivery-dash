@@ -27,6 +27,8 @@ export const ERRORS = {
   USER_NOT_FOUND: 'User not found',
   USER_ALREADY_EXIST: 'User already exist',
   USER_NOT_AUTHORIZED: 'User not authorized',
+  FORBIDDEN_UPDATE_ORDER: 'You are not allowed to update this order',
+  ORDER_IS_PICKEDUP: 'Order is pickedup',
 };
 
 export const EVENTS = {
@@ -35,6 +37,8 @@ export const EVENTS = {
 
 export const MESSAGES = {
   NEW_ORDER_CREATED: 'New order created',
+  ORDER_ACCEPTED: 'Order accepted',
+  ORDER_CANCELLED: 'Order cancelled',
 };
 
 export type UserObject = {

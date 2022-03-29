@@ -1,9 +1,9 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 
-import { REPOSITORIES, EVENTS, MESSAGES } from 'src/common/constants';
+import { REPOSITORIES, EVENTS, MESSAGES, ERRORS } from 'src/common/constants';
 import { OrderCreatedEvent } from './events/order-created.event';
-import { createOrderObject } from './utils';
+import { checkUpdateObject, createOrderObject } from './utils';
 import { OrderDto } from './dto';
 
 import { NotificationService } from '../notification/notification.service';
@@ -79,7 +79,11 @@ export class OrderService {
       pickupAddressId: pickupAddressObj.id,
       droppoffAddressId: dropoffAddressObj.id,
     });
-    await this.notificationService.createNotification(user.id, newOrder.id);
+    await this.notificationService.createNotification(
+      user.id,
+      newOrder.id,
+      MESSAGES.NEW_ORDER_CREATED,
+    );
 
     const orderCreatedEvent = new OrderCreatedEvent();
     orderCreatedEvent.orderId = newOrder.id;
@@ -92,5 +96,79 @@ export class OrderService {
     this.eventEmitter.emit(EVENTS.NEW_CREATED_ORDER, orderCreatedEvent);
 
     return newOrder;
+  }
+
+  // Update Order By Id
+  async updateOrderById(order: any, user: any): Promise<any> {
+    const { type, id: userId } = user;
+
+    //deliverer can only update isPickedup, isDelivered, isPaid
+    if (type === 'delivery') {
+      if (checkUpdateObject.deliverer(order)) {
+        throw new HttpException(
+          {
+            status: HttpStatus.FORBIDDEN,
+            message: ERRORS.FORBIDDEN_UPDATE_ORDER,
+          },
+          HttpStatus.FORBIDDEN,
+        );
+      }
+
+      await this.ordersRepository.update(
+        {
+          delivererId: userId,
+          updatedBy: user.id,
+          isAccepted: true,
+          isDelivered: order.isDelivered ? true : false,
+          isPaid: order.isPaid ? true : false,
+          isPickedup: order.isPickedup ? true : false,
+        },
+        { where: { id: order.id } },
+      );
+
+      await this.notificationService.updateNotification(
+        user.id,
+        order.id,
+        MESSAGES.ORDER_ACCEPTED,
+      );
+      return order;
+    }
+
+    // user can only update isCanceled
+    if (type === 'user') {
+      if (checkUpdateObject.user(order)) {
+        throw new HttpException(
+          {
+            status: HttpStatus.FORBIDDEN,
+            message: ERRORS.FORBIDDEN_UPDATE_ORDER,
+          },
+          HttpStatus.FORBIDDEN,
+        );
+      }
+
+      const orderFromDB = await this.ordersRepository.findOne({
+        where: { id: order.id },
+      });
+      if (orderFromDB.isPickedup) {
+        throw new HttpException(
+          {
+            status: HttpStatus.FORBIDDEN,
+            message: ERRORS.ORDER_IS_PICKEDUP,
+          },
+          HttpStatus.FORBIDDEN,
+        );
+      }
+
+      await this.notificationService.createNotification(
+        user.id,
+        order.id,
+        MESSAGES.ORDER_CANCELLED,
+      );
+      order?.isCancelled &&
+        (await this.ordersRepository.destroy({ where: { id: order.id } }));
+
+      return order;
+    }
+    return null;
   }
 }

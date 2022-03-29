@@ -21,3 +21,14 @@ export const createOrderObject = (order, pickupAddress, dropoffAddress) => ({
     latitude: dropoffAddress.latitude,
   },
 });
+
+export const checkUpdateObject = {
+  user: function (order) {
+    return (
+      order.isPaid || order.isDelivered || order.isPickedup || order.isAccepted
+    );
+  },
+  deliverer: function (order) {
+    return order.isCancelled;
+  },
+};

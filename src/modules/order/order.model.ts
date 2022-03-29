@@ -60,6 +60,12 @@ export class Orders extends Model {
   @Column(DataType.BOOLEAN)
   isPaid: boolean;
 
+  @Column(DataType.BOOLEAN)
+  isPickedup: boolean;
+
+  @Column(DataType.BOOLEAN)
+  isCancelled: boolean;
+
   @Column(DataType.NUMBER)
   totalPrice: number;
 
@@ -69,8 +75,14 @@ export class Orders extends Model {
   @Column(DataType.STRING)
   updatedBy: number;
 
+  @Column(DataType.DATE)
+  createdAt: Date;
+
+  @Column(DataType.DATE)
+  updatedAt: Date;
+
   @Column(DataType.VIRTUAL(DataType.BOOLEAN))
-  get isPickedup() {
+  get isAccepted() {
     return !!this.delivererId;
   }
 }

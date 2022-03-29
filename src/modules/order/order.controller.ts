@@ -1,4 +1,5 @@
 import {
+  Put,
   Get,
   Post,
   Body,
@@ -43,5 +44,14 @@ export class OrdersController {
     @User() user: { id: number },
   ): Promise<object> {
     return this.ordersService.createOrder(order, user);
+  }
+
+  @Roles('user', 'delivery')
+  @Put()
+  updateOrder(
+    @Body() order: any,
+    @User() user: { userId: number },
+  ): Promise<object> {
+    return this.ordersService.updateOrderById(order, user);
   }
 }
