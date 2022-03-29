@@ -13,7 +13,7 @@ import { OrderCreatedEvent } from '../order/events/order-created.event';
 import { EVENTS, USERS } from 'src/common/constants';
 import { UserService } from '../user/user.service';
 
-@WebSocketGateway()
+@WebSocketGateway({ cors: { origin: '*' } })
 // ws://localhost:3000/?userId=1
 export class TrackerGateway
   implements OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit
