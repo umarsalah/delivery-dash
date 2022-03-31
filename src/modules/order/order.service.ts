@@ -8,6 +8,7 @@ import {
   MESSAGES,
   REPOSITORIES,
 } from 'src/common/constants';
+
 import { OrderCreatedEvent } from './events/order-created.event';
 import { checkUpdateObject, createOrderObject } from './utils';
 import { OrderDto } from './dto';

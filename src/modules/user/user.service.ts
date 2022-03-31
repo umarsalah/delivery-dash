@@ -2,7 +2,7 @@ import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 
 import { AddressService } from 'src/modules/address/address.service';
 
-import { REPOSITORIES, ERRORS, UserObject, User } from '../../common/constants';
+import { REPOSITORIES, ERRORS, User } from '../../common/constants';
 import { comparePassword, hashPassword } from 'src/common/utils';
 import { checkUser, createUserObject } from './utils';
 import { generateToken } from 'src/common/utils/jwt';
@@ -29,7 +29,7 @@ export class UserService {
   }
 
   // login user
-  async login(email: string, password: string): Promise<UserObject> {
+  async login(email: string, password: string): Promise<User> {
     const user = await this.userRepository.findOne({
       where: { email },
     });
@@ -41,7 +41,8 @@ export class UserService {
 
     return {
       id: user.id,
-      user: user.firstName,
+      firstName: user.firstName,
+      lastName: user.lastName,
       email: user.email,
       token: generateToken(user.email),
       type: user.type,
@@ -49,7 +50,7 @@ export class UserService {
   }
 
   //  Create User in DB and add address to DB
-  async signup(body): Promise<object> {
+  async signup(body): Promise<User> {
     const { address, ...userObj } = body;
     let addedAddress: number;
 
@@ -89,8 +90,10 @@ export class UserService {
 
       return {
         id: userFromDB.id,
-        user: userObj.firstName,
+        firstName: userObj.firstName,
+        lastName: userObj.lastName,
         email: userObj.email,
+        type: userObj.type,
       };
     }
   }
