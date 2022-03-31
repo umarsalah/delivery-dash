@@ -16,12 +16,6 @@ export enum RoleStatus {
   DELIVERY = 'delivery',
 }
 
-export const USERS = {
-  ADMIN: 'admin',
-  USER: 'user',
-  DELIVERY: 'delivery',
-};
-
 export const KM_PRICE = 0.5;
 
 export const ERRORS = {

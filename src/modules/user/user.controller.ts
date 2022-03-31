@@ -10,7 +10,7 @@ import {
 
 import { Public, Roles } from '../../common/decorators';
 import { LoginUserDto, SignupDto } from './dto';
-import { USERS } from 'src/common/constants';
+import { RoleStatus } from 'src/common/constants';
 import { UserService } from './user.service';
 
 @Controller()
@@ -30,7 +30,7 @@ export class UserController {
   }
 
   @Get('users')
-  @Roles(USERS.ADMIN)
+  @Roles(RoleStatus.ADMIN)
   getUsers() {
     return this.userService.getAllUsers();
   }
@@ -42,7 +42,7 @@ export class UserController {
   }
 
   @Delete('users/:userId')
-  @Roles(USERS.ADMIN)
+  @Roles(RoleStatus.ADMIN)
   deleteOneUserById(@Param('userId', ParseIntPipe) userId: number) {
     return this.userService.deleteUserById(userId);
   }

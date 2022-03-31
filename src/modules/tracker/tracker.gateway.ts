@@ -10,7 +10,7 @@ import {
 } from '@nestjs/websockets';
 
 import { OrderCreatedEvent } from '../order/events/order-created.event';
-import { EVENTS, USERS } from 'src/common/constants';
+import { EVENTS, RoleStatus } from 'src/common/constants';
 import { UserService } from '../user/user.service';
 
 @WebSocketGateway({ cors: { origin: '*' } })
@@ -48,7 +48,7 @@ export class TrackerGateway
   onNewCreatedOrder(event: OrderCreatedEvent) {
     this.logger.log(`New order created: ${event.orderId}`);
     this.webSocket
-      .to([USERS.ADMIN, USERS.DELIVERY])
+      .to([RoleStatus.ADMIN, RoleStatus.DELIVERY])
       .emit(EVENTS.NEW_CREATED_ORDER, event);
   }
 }

@@ -13,7 +13,7 @@ import { OrderService } from './order.service';
 
 import { User } from 'src/common/decorators/user.decorator';
 import { Public, Roles } from 'src/common/decorators';
-import { USERS } from 'src/common/constants';
+import { RoleStatus } from 'src/common/constants';
 import { OrderDto } from './dto';
 
 @Controller('orders')
@@ -21,7 +21,7 @@ export class OrdersController {
   constructor(private readonly ordersService: OrderService) {}
 
   @Get()
-  @Roles(USERS.ADMIN, USERS.DELIVERY)
+  @Roles(RoleStatus.ADMIN, RoleStatus.DELIVERY)
   getAllOrders(): Promise<object[]> {
     return this.ordersService.getAllOrders();
   }
@@ -33,13 +33,13 @@ export class OrdersController {
   }
 
   @Delete('/:id')
-  @Roles(USERS.ADMIN)
+  @Roles(RoleStatus.ADMIN)
   deleteOrderById(@Param('id', ParseIntPipe) id: number): Promise<number> {
     return this.ordersService.deleteOrderById(id);
   }
 
   @Post()
-  @Roles(USERS.USER)
+  @Roles(RoleStatus.USER)
   createOrder(
     @Body() order: OrderDto,
     @User() user: { id: number },
@@ -47,7 +47,7 @@ export class OrdersController {
     return this.ordersService.createOrder(order, user);
   }
 
-  @Roles(USERS.USER, USERS.DELIVERY)
+  @Roles(RoleStatus.USER, RoleStatus.DELIVERY)
   @Put()
   updateOrder(
     @Body() order: any,
