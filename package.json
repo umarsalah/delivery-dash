@@ -10,7 +10,7 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "NODE_ENV=production nest start",
-    "dev": "NODE_ENV=development nest start --watch",
+    "start:dev": "NODE_ENV=development nest start --watch",
     "migrate": "ts-node node_modules/.bin/sequelize db:migrate",
     "migrate:undo": "ts-node node_modules/.bin/sequelize db:migrate:undo",
     "start:debug": "nest start --debug --watch",

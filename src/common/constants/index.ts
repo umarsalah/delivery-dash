@@ -22,6 +22,8 @@ export const USERS = {
   DELIVERY: 'delivery',
 };
 
+export const KM_PRICE = 0.5;
+
 export const ERRORS = {
   LOGIN_ERROR: 'Email or password is incorrect',
   USER_NOT_FOUND: 'User not found',

@@ -102,20 +102,19 @@ export class UserService {
   }
 
   // Get User By id param from DB
-  async getUser(id: number): Promise<object> {
+  async getUserById(id: number): Promise<object> {
     const user = await this.userRepository.scope('basic').findOne({
       where: { id },
     });
     if (user) {
       const address = await this.addressService.findAddressById(user.addressId);
-
       return createUserObject(user, address);
     }
     return null;
   }
 
   // Delete User By id param from DB
-  async deleteUser(id: number): Promise<number> {
+  async deleteUserById(id: number): Promise<number> {
     const user = await this.userRepository.scope('basic').findOne({
       where: { id },
     });

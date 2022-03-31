@@ -1,7 +1,13 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 
-import { REPOSITORIES, EVENTS, MESSAGES, ERRORS } from 'src/common/constants';
+import {
+  ERRORS,
+  EVENTS,
+  KM_PRICE,
+  MESSAGES,
+  REPOSITORIES,
+} from 'src/common/constants';
 import { OrderCreatedEvent } from './events/order-created.event';
 import { checkUpdateObject, createOrderObject } from './utils';
 import { OrderDto } from './dto';
@@ -32,7 +38,8 @@ export class OrderService {
       pickupAddress,
       dropoffAddress,
     );
-    const price = distance * 0.5;
+
+    const price = distance * KM_PRICE;
     return parseFloat(price.toFixed(2));
   }
 

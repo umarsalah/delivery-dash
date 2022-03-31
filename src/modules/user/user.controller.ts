@@ -37,13 +37,13 @@ export class UserController {
 
   @Get('users/:userId')
   @Public()
-  getUser(@Param('userId', ParseIntPipe) userId: number) {
-    return this.userService.getUser(userId);
+  getOneUserById(@Param('userId', ParseIntPipe) userId: number) {
+    return this.userService.getUserById(userId);
   }
 
   @Delete('users/:userId')
   @Roles(USERS.ADMIN)
-  deleteUser(@Param('userId', ParseIntPipe) userId: number) {
-    return this.userService.deleteUser(userId);
+  deleteOneUserById(@Param('userId', ParseIntPipe) userId: number) {
+    return this.userService.deleteUserById(userId);
   }
 }
