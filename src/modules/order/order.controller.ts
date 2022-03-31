@@ -14,7 +14,7 @@ import { OrderService } from './order.service';
 import { User } from 'src/common/decorators/user.decorator';
 import { Public, Roles } from 'src/common/decorators';
 import { RoleStatus } from 'src/common/constants';
-import { OrderDto } from './dto';
+import { OrderDto, UpdateOrderDto } from './dto';
 
 @Controller('orders')
 export class OrdersController {
@@ -50,7 +50,7 @@ export class OrdersController {
   @Roles(RoleStatus.USER, RoleStatus.DELIVERY)
   @Put()
   updateOrder(
-    @Body() order: any,
+    @Body() order: UpdateOrderDto,
     @User() user: { userId: number },
   ): Promise<object> {
     return this.ordersService.updateOrderById(order, user);

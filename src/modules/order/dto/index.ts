@@ -1,3 +1,4 @@
 import { OrderDto } from './order.dto';
+import { UpdateOrderDto } from './update-order.dto';
 
-export { OrderDto };
+export { OrderDto, UpdateOrderDto };
