@@ -71,30 +71,47 @@ export class UserService {
         address.longitude,
         address.latitude,
       );
-      if (!addressId) {
-        const newAddress = await this.addressService.createAddress(address, {
-          createdBy: userObj.email,
-          updatedBy: userObj.email,
-        });
-        addedAddress = newAddress.id;
-      } else {
-        addedAddress = addressId;
+      // use transaction to add user and address
+
+      const transaction = await this.userRepository.sequelize.transaction();
+      try {
+        if (!addressId) {
+          const newAddress = await this.addressService.createAddress(
+            address,
+            {
+              createdBy: userObj.email,
+              updatedBy: userObj.email,
+            },
+            transaction,
+          );
+          addedAddress = newAddress.id;
+        } else {
+          addedAddress = addressId;
+        }
+
+        const userFromDB = await this.userRepository.create(
+          {
+            ...userObj,
+            addressId: addedAddress,
+            createdBy: userObj.email,
+            updatedBy: userObj.email,
+          },
+          { transaction },
+        );
+
+        return {
+          id: userFromDB.id,
+          firstName: userObj.firstName,
+          lastName: userObj.lastName,
+          email: userObj.email,
+          type: userObj.type,
+        };
+      } catch (error) {
+        await transaction.rollback();
+        throw new HttpException(error, HttpStatus.BAD_REQUEST);
+      } finally {
+        await transaction.commit();
       }
-
-      const userFromDB = await this.userRepository.create({
-        ...userObj,
-        addressId: addedAddress,
-        createdBy: userObj.email,
-        updatedBy: userObj.email,
-      });
-
-      return {
-        id: userFromDB.id,
-        firstName: userObj.firstName,
-        lastName: userObj.lastName,
-        email: userObj.email,
-        type: userObj.type,
-      };
     }
   }
 

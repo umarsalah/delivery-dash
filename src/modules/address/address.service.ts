@@ -22,11 +22,18 @@ export class AddressService {
     });
   }
 
-  createAddress(address: object, actionUser: object): Promise<Addresses> {
-    return this.addressesRepository.create({
-      ...address,
-      ...actionUser,
-    });
+  createAddress(
+    address: object,
+    actionUser: object,
+    transaction?,
+  ): Promise<Addresses> {
+    return this.addressesRepository.create(
+      {
+        ...address,
+        ...actionUser,
+      },
+      { transaction },
+    );
   }
   calculateDistance(pickupAddress: any, dropoffAddress: any) {
     const { latitude: pickupLat, longitude: pickupLng } = pickupAddress;
